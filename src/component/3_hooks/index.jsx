@@ -41,12 +41,12 @@ import { Input, InputLabel, Stack, Button } from '@mui/material';
 export default function Demo() {
     const [result, setResult] = React.useState(0)
     const [name, setName] = React.useState('Yanwen')
-    
+    const myRef = React.useRef()
     React.useEffect((params) => {
-         const timer = setInterval(() => {
+        const timer = setInterval(() => {
             setResult((preResult) => preResult + 1)
         }, 1000);
-        return ()=> {
+        return () => {
             clearInterval(timer)
         }
     }, [])
@@ -59,8 +59,12 @@ export default function Demo() {
     function unmount() {
         ReactDOM.unmountComponentAtNode(document.getElementById('root'))
     }
-    function change(params) {
-        setName('jack')
+    function outputValueOfInput(params) {
+        console.log(myRef.current.value);
+        // setName('jack')
+    }
+    function nameInputValueChange(event) {
+        setName(event.target.value)
     }
     return (
         <div>
@@ -73,10 +77,10 @@ export default function Demo() {
             </Stack>
             <Stack direction='row' spacing={2}>
                 <InputLabel>My Name is: </InputLabel>
-                <Input value={name}></Input>
+                <Input inputRef={myRef} value={name} onChange={nameInputValueChange}></Input>
             </Stack>
             <Stack direction='row' spacing={2} sx={{ mt: 2, width: 300 }}>
-                <Button onClick={change} variant='contained' fullWidth>Click to change name</Button>
+                <Button onClick={outputValueOfInput} variant='contained' fullWidth>log input value</Button>
                 <Button onClick={unmount} variant='contained' fullWidth>unmount</Button>
             </Stack>
         </div >
